@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二节 经营类资产</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --primary-light: #2b6cb0;
+    --accent: #c05621;
+    --accent-light: #ed8936;
+    --success: #276749;
+    --success-light: #c6f6d5;
+    --warning: #c53030;
+    --warning-light: #fed7d7;
+    --info: #2b6cb0;
+    --info-light: #bee3f8;
+    --tip: #6b46c1;
+    --tip-light: #e9d8fd;
+    --example-bg: #fefcbf;
+    --bg: #f7fafc;
+    --card-bg: #ffffff;
+    --text: #1a202c;
+    --text-secondary: #4a5568;
+    --border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+    --shadow-lg: 0 10px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Noto Serif SC", "Source Han Serif CN", "Songti SC", Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- NAV SIDEBAR ---- */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(175deg, #1a365d 0%, #2d3748 100%);
+    color: #e2e8f0;
+    overflow-y: auto;
+    padding: 32px 20px;
+    z-index: 100;
+    transition: transform .3s;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.2) transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 5px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 3px; }
+
+  .sidebar .logo { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 1px; }
+  .sidebar .logo-sub { font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 30px; }
+
+  .sidebar nav a {
+    display: block;
+    padding: 8px 14px;
+    margin: 2px 0;
+    color: rgba(255,255,255,.72);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all .2s;
+    line-height: 1.5;
+  }
+  .sidebar nav a:hover,
+  .sidebar nav a.active { color: #fff; background: rgba(255,255,255,.1); }
+  .sidebar nav a.indent { padding-left: 28px; font-size: 13px; }
+  .sidebar nav a.indent2 { padding-left: 44px; font-size: 12.5px; }
+  .sidebar nav .divider { height: 1px; background: rgba(255,255,255,.1); margin: 12px 0; }
+
+  /* ---- HAMBURGER ---- */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 16px; left: 16px;
+    z-index: 200;
+    width: 44px; height: 44px;
+    background: var(--primary);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+  }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #fff; transition: .3s; position: relative; }
+  .hamburger span::before,
+  .hamburger span::after { content: ""; position: absolute; width: 22px; height: 2px; background: #fff; left: 0; transition: .3s; }
+  .hamburger span::before { top: -7px; }
+  .hamburger span::after { top: 7px; }
+  .hamburger.open span { background: transparent; }
+  .hamburger.open span::before { transform: rotate(45deg); top: 0; }
+  .hamburger.open span::after { transform: rotate(-45deg); top: 0; }
+
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 90; }
+  .overlay.show { display: block; }
+
+  /* ---- MAIN ---- */
+  .main { margin: 0 auto; padding: 50px 40px 80px 340px; max-width: 1600px; }
+
+  /* ---- HERO ---- */
+  .hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #fff;
+    padding: 60px 50px;
+    border-radius: var(--radius);
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after { content: ""; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; background: rgba(255,255,255,.06); border-radius: 50%; }
+  .hero::before { content: ""; position: absolute; right: 40px; bottom: -40px; width: 180px; height: 180px; background: rgba(255,255,255,.04); border-radius: 50%; }
+  .hero .chapter-label { font-size: 14px; text-transform: uppercase; letter-spacing: 3px; opacity: .7; margin-bottom: 12px; }
+  .hero h1 { font-size: 34px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+  .hero .subtitle { font-size: 18px; opacity: .85; line-height: 1.6; }
+
+  /* ---- HEADINGS ---- */
+  h2 { font-size: 28px; color: var(--primary); margin: 60px 0 24px; padding-bottom: 12px; border-bottom: 3px solid var(--primary); line-height: 1.4; }
+  h3 { font-size: 22px; color: var(--primary); margin: 44px 0 18px; padding-left: 16px; border-left: 4px solid var(--accent); line-height: 1.4; }
+  h4 { font-size: 19px; color: var(--text); margin: 32px 0 14px; line-height: 1.4; }
+  h5 { font-size: 17px; color: var(--text-secondary); margin: 24px 0 10px; line-height: 1.4; }
+
+  p { margin-bottom: 16px; text-align: justify; }
+  ul, ol { margin: 12px 0 18px 24px; }
+  li { margin-bottom: 8px; }
+
+  /* ---- TABLES ---- */
+  .table-wrapper { overflow-x: auto; margin: 20px 0 28px; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); font-size: 15px; line-height: 1.7; }
+  thead { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; }
+  thead th { padding: 14px 18px; text-align: left; font-weight: 600; font-size: 14px; letter-spacing: .5px; white-space: nowrap; }
+  tbody td { padding: 12px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:hover { background: #f0f7ff; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "JetBrains Mono","Cascadia Code","Consolas",monospace; font-size: 14px; }
+  tr.total td { font-weight: 700; background: #ebf4ff; }
+
+  /* ---- CALLOUT ---- */
+  .callout { padding: 20px 24px; margin: 24px 0; border-radius: var(--radius); border-left: 5px solid; font-size: 15.5px; line-height: 1.85; }
+  .callout-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .callout.warning { background: var(--warning-light); border-color: var(--warning); color: #742a2a; }
+  .callout.warning .callout-title { color: var(--warning); }
+  .callout.tip { background: var(--tip-light); border-color: var(--tip); color: #44337a; }
+  .callout.tip .callout-title { color: var(--tip); }
+  .callout.info { background: var(--info-light); border-color: var(--info); color: #2a4365; }
+  .callout.info .callout-title { color: var(--info); }
+  .callout.example { background: var(--example-bg); border-color: #d69e2e; color: #744210; }
+  .callout.example .callout-title { color: #b7791f; }
+  .callout.success { background: var(--success-light); border-color: var(--success); color: #22543d; }
+  .callout.success .callout-title { color: var(--success); }
+
+  /* ---- BLOCKQUOTE ---- */
+  blockquote { margin: 24px 0; padding: 20px 28px; background: linear-gradient(135deg, #faf5ff, #ebf8ff); border-left: 5px solid var(--primary-light); border-radius: 0 var(--radius) var(--radius) 0; font-style: italic; color: var(--text-secondary); line-height: 1.9; }
+
+  /* ---- CODE ---- */
+  code { background: #edf2f7; padding: 2px 7px; border-radius: 4px; font-size: 14px; font-family: "JetBrains Mono","Cascadia Code","Consolas",monospace; color: var(--accent); }
+  pre { background: #1a202c; color: #e2e8f0; padding: 22px 26px; border-radius: var(--radius); overflow-x: auto; margin: 20px 0; font-size: 15px; line-height: 1.7; font-family: "JetBrains Mono","Cascadia Code","Consolas",monospace; }
+
+  /* ---- FORMULA ---- */
+  .formula { background: linear-gradient(135deg, #fffff0, #fefcbf); border: 2px dashed #d69e2e; border-radius: var(--radius); padding: 20px 28px; margin: 22px 0; text-align: center; font-size: 18px; font-weight: 600; color: #744210; letter-spacing: .5px; }
+
+  /* ---- CARD GRID ---- */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 24px 0; }
+  .card { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border-top: 4px solid var(--primary-light); transition: transform .2s, box-shadow .2s; }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .card h5 { margin: 0 0 10px; font-size: 17px; color: var(--primary); border: none; padding: 0; }
+  .card p { font-size: 15px; margin: 0; color: var(--text-secondary); line-height: 1.7; }
+  .card.orange { border-top-color: var(--accent); }
+  .card.green { border-top-color: var(--success); }
+  .card.purple { border-top-color: var(--tip); }
+
+  /* ---- COMPARE ROW ---- */
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .compare-item { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .compare-item h5 { margin: 0 0 10px; font-size: 16px; }
+  .compare-item p { font-size: 15px; margin: 0; color: var(--text-secondary); }
+
+  /* ---- STEP FLOW ---- */
+  .step-flow { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+  .step { display: flex; gap: 20px; align-items: flex-start; }
+  .step-marker { flex-shrink: 0; width: 40px; height: 40px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; position: relative; }
+  .step-marker::after { content: ""; position: absolute; top: 44px; left: 50%; transform: translateX(-50%); width: 2px; height: 24px; background: var(--border); }
+  .step:last-child .step-marker::after { display: none; }
+  .step-content { padding-bottom: 28px; flex: 1; }
+  .step-content strong { color: var(--primary); font-size: 17px; }
+
+  /* ---- BADGE ---- */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: .5px; vertical-align: middle; }
+  .badge.red { background: #fed7d7; color: #c53030; }
+  .badge.blue { background: #bee3f8; color: #2b6cb0; }
+  .badge.green { background: #c6f6d5; color: #276749; }
+  .badge.orange { background: #feebc8; color: #c05621; }
+  .badge.purple { background: #e9d8fd; color: #6b46c1; }
+
+  /* ---- MISC ---- */
+  .highlight { background: linear-gradient(transparent 60%, #fefcbf 60%); padding: 0 2px; }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 48px 0; }
+
+  /* ---- SCROLL TOP ---- */
+  .scroll-top { position: fixed; bottom: 30px; right: 30px; width: 48px; height: 48px; background: var(--primary); color: #fff; border: none; border-radius: 50%; cursor: pointer; font-size: 22px; display: none; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); transition: .3s; z-index: 50; }
+  .scroll-top:hover { background: var(--accent); }
+  .scroll-top.show { display: flex; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 1024px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .hamburger { display: flex; }
+    .main { padding: 30px 24px 60px; }
+    .hero { padding: 40px 30px; }
+    .hero h1 { font-size: 26px; }
+    .compare-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 15.5px; }
+    .main { padding: 20px 16px 50px; }
+    .hero { padding: 30px 20px; }
+    .hero h1 { font-size: 22px; }
+    h2 { font-size: 22px; }
+    h3 { font-size: 19px; }
+    .card-grid { grid-template-columns: 1fr; }
+    table { font-size: 13px; }
+    thead th, tbody td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()"><span></span></button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo">手把手教你读财报</div>
+  <div class="logo-sub">第二节 · 经营类资产</div>
+  <nav>
+    <a href="#s1">一、货币资金</a>
+    <a href="#s1-1" class="indent">1. 关注合并报表数据</a>
+    <a href="#s1-2" class="indent">2. 货币资金的构成</a>
+    <a href="#s1-3" class="indent">3. 现金及现金等价物</a>
+    <a href="#s1-4" class="indent">4. 使用受限的货币资金</a>
+    <a href="#s1-5" class="indent">5. 货币资金发出的信号</a>
+    <div class="divider"></div>
+    <a href="#s2">二、应收票据和应收账款</a>
+    <a href="#s2-1" class="indent">1. 应收票据</a>
+    <a href="#s2-2" class="indent">2. 应收账款</a>
+    <a href="#s2-3" class="indent">3. 应收账款的陷阱</a>
+    <a href="#s2-4" class="indent">4. 构成与坏账准备</a>
+    <a href="#s2-5" class="indent">5. 应收账款造假</a>
+    <div class="divider"></div>
+    <a href="#s3">三、预付账款</a>
+    <a href="#s4">四、应收利息和应收股利</a>
+    <a href="#s5">五、其他应收款</a>
+    <a href="#s6">六、长期应收款</a>
+    <a href="#s7">七、存货</a>
+    <a href="#s7-1" class="indent">利用存货造假的手法</a>
+    <div class="divider"></div>
+    <a href="#s8">八、新准则升级版</a>
+    <a href="#s8-1" class="indent">与新准则无关的变化</a>
+    <a href="#s8-2" class="indent">新准则带来的变化</a>
+  </nav>
+</aside>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <div class="hero" id="top">
+    <div class="chapter-label">Chapter 02 · Section 02</div>
+    <h1>经营类资产</h1>
+    <p class="subtitle">与企业销售商品、提供劳务及对外采购等经营活动直接相关的资产科目。<br>包括货币资金、存货、各类应收款和预付款。</p>
+  </div>
+
+  <!-- ======================== 一、货币资金 ======================== -->
+  <h2 id="s1">一、货币资金</h2>
+
+  <h3 id="s1-1">1. 关注合并报表数据</h3>
+
+  <p>资产负债表按变现难易程度排列，<strong>货币资金</strong>作为最容易变现的资产排在首位。</p>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 提示</div>
+    投资人只需关注<strong>合并资产负债表</strong>中的货币资金数据。合并报表展示的是公司本部及下属子公司合计控制的货币资金总量，至于资金放在母公司还是子公司账户，仅是内部划拨行为。
+  </div>
+
+  <p>以贵州茅台2013年为例：</p>
+  <ul>
+    <li>合并报表货币资金期末余额：<strong>251.85亿元</strong>（年初220.62亿元），全年增加31.23亿元</li>
+    <li>母公司货币资金期末余额：117.68亿元（年初23.46亿元），本部增加94.22亿元</li>
+  </ul>
+
+  <h3 id="s1-2">2. 货币资金的构成</h3>
+
+  <p>货币资金的详细构成可在财报附注中查询。以贵州茅台2013年为例：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>项目</th><th class="num">期末数（元）</th><th class="num">期初数（元）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>现金</td><td class="num">128,508.61</td><td class="num">95,904.65</td></tr>
+        <tr><td>银行存款</td><td class="num">23,732,162,082.58</td><td class="num">22,047,383,115.84</td></tr>
+        <tr><td>其他货币资金</td><td class="num">12,527,784.75</td><td class="num">14,520,829.68</td></tr>
+        <tr><td>存放中央银行法定存款准备金</td><td class="num">1,433,267,094.01</td><td class="num">—</td></tr>
+        <tr><td>存放中央银行超额存款准备金</td><td class="num">6,923,861.73</td><td class="num">—</td></tr>
+        <tr class="total"><td>合计</td><td class="num">25,185,009,331.68</td><td class="num">22,061,999,850.17</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>使用受到限制的货币资金</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>项目</th><th class="num">期末数（元）</th><th class="num">期初数（元）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>存放中央银行法定存款准备金</td><td class="num">1,433,267,094.01</td><td class="num">—</td></tr>
+        <tr><td>不能随时支取的定期银行存款</td><td class="num">1,760,000,000.00</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>因此，贵州茅台2013年底251.85亿元货币资金中：</p>
+  <ul>
+    <li><strong>使用受限资金</strong>：14.33亿 + 17.60亿 = <strong>31.93亿元</strong></li>
+    <li><strong>不受限资金（现金及现金等价物）</strong>：251.85亿 - 31.93亿 = <strong>219.92亿元</strong></li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 注意</div>
+    受限资金"期初数"空白，意味着贵州茅台2012年的货币资金全部是现金及现金等价物。2013年产生受限资金是因为下属<strong>茅台财务公司</strong>（2013年3月6日成立）开始经营所致。
+  </div>
+
+  <h3 id="s1-3">3. 现金及现金等价物的范围</h3>
+
+  <p>现金及现金等价物包括：</p>
+  <ul>
+    <li>库存现金、银行存款、其他货币资金</li>
+    <li>存放中央银行可随时支取的备付金、存放同业款项、拆放同业款项、同业间买入返售证券</li>
+    <li>企业持有的期限短（一般指从购买日起<strong>三个月内到期</strong>）、流动性强、易于转换为已知金额现金、价值变动风险很小的投资（如国债、大型企业短期债、银行承兑汇票、货币基金等）</li>
+  </ul>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 提示</div>
+    <strong>股票不算</strong>现金及现金等价物，因其不符合"易于转换已知金额现金、价值变动风险很小"的要求。
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>项目</th><th>解释</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>库存现金</strong></td><td>公司及子公司保险柜里的现钞。按《现金管理暂行条例》，保留现金以单位3至5天零星开支为限，边远地区不超过15天。</td></tr>
+        <tr><td><strong>银行存款</strong></td><td>无须解释。</td></tr>
+        <tr><td><strong>其他货币资金</strong></td><td>因指定目的存在银行专户的钱，如临时采购专户、专项投资款、期限较短（通常三个月内）的承兑汇票或信用证保证金等。</td></tr>
+        <tr><td><strong>存放/拆放同业款项</strong></td><td>金融机构之间的短期资金拆借。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="s1-4">4. 使用受到限制的货币资金</h3>
+
+  <p>除上述法定存款准备金和定期存款外，其他公司报表中还可能存在：</p>
+  <ul>
+    <li>被司法机关冻结的存款</li>
+    <li>已质押存款</li>
+    <li>根据合同约定的某账户必须保持的最低存款余额</li>
+    <li>公司信用卡账户存款</li>
+    <li>为开具银行本票、汇票、承兑汇票、信用证而存入银行的保证金</li>
+    <li>保险公司的资本金存款等</li>
+  </ul>
+
+  <p><strong>核心原则</strong>：凡是<strong>不能随时支取</strong>的货币资金，就不算现金及现金等价物。</p>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 注意</div>
+    对于承兑汇票保证金、信用证保证金，中国注册会计师协会建议：票证到期日在<strong>三个月内</strong>的，视为现金等价物；超过三个月的，视为受限制的货币资金。实践中处理方式可能不同。
+  </div>
+
+  <h3 id="s1-5">5. 货币资金发出的信号</h3>
+
+  <p><strong>产生货币资金的三种途径</strong>：</p>
+
+  <div class="step-flow">
+    <div class="step">
+      <div class="step-marker">1</div>
+      <div class="step-content"><strong>发售股票或举债</strong></div>
+    </div>
+    <div class="step">
+      <div class="step-marker">2</div>
+      <div class="step-content"><strong>出售资产或业务部门</strong></div>
+    </div>
+    <div class="step">
+      <div class="step-marker" style="background:var(--success)">3</div>
+      <div class="step-content"><strong>经营活动的现金流入持续大于现金流出</strong>——意味着企业具有持续性的竞争优势</div>
+    </div>
+  </div>
+
+  <p><strong>分析基本原则</strong>：货币资金要与<strong>短期债务</strong>及<strong>经营需要</strong>相匹配。</p>
+
+  <div class="compare-row">
+    <div class="compare-item" style="border-top:4px solid var(--primary-light)">
+      <h5>与短期债务匹配</h5>
+      <p>代表<strong>偿债能力</strong></p>
+    </div>
+    <div class="compare-item" style="border-top:4px solid var(--accent)">
+      <h5>与经营需要匹配</h5>
+      <p>代表<strong>资金运用能力</strong></p>
+    </div>
+  </div>
+
+  <h4>五种需警惕的异常信号</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>情形</th><th>现象</th><th>潜在风险</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>（1）</strong></td><td>货币资金余额比短期负债小很多</td><td>短期偿债危机，资金链安全性有问题</td></tr>
+        <tr><td><strong>（2）</strong></td><td>货币资金充裕，却借了很多有息甚至高息负债（"存贷双高"）</td><td>大概率是账面货币资金<strong>虚构、挪用或被担保冻结</strong></td></tr>
+        <tr><td><strong>（3）</strong></td><td>定期存款和其他货币资金数额很大，却缺乏短期可动用流动资金</td><td>资金可能已被控股股东通过集团资金池协议"借"走</td></tr>
+        <tr><td><strong>（4）</strong></td><td>其他货币资金数额巨大，缺乏合理解释</td><td>可能存在对外支付大额投资预付款、意向金、保证金等，导致资金被占用</td></tr>
+        <tr><td><strong>（5）</strong></td><td>货币资金产生的利息收入，显著低于常见理财或存款利率</td><td>资金真实但只在报表日前短暂停留，查验审计后随即流出</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 警告</div>
+    投资不是办案，不需要"疑罪从无"。遵照<strong>"疑罪从有"</strong>原则实施排除，是投资人应有的谨慎态度。
+  </div>
+
+  <div class="callout example">
+    <div class="callout-title">📚 贵州茅台的特殊情况</div>
+    作为几乎没有有息负债且经营持续产生大量现金流入的公司，茅台账面保留的货币资金远超实际投资及分红所需（老唐称之为"<strong>货币冗余倍数</strong>"），这属于典型的<strong>资金运用能力低下</strong>，在评估公司价值时应视为<strong>扣分项</strong>。
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 二、应收票据和应收账款 ======================== -->
+  <h2 id="s2">二、应收票据和应收账款</h2>
+
+  <h3 id="s2-1">1. 应收票据</h3>
+
+  <p>应收票据科目下的票据分为两类，含义大不相同：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>类型</th><th>简称</th><th>兑付承诺方</th><th>信用质量</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>银行承兑汇票</strong></td><td>银票</td><td>承兑银行</td><td>国有大中型银行及股份制银行开出的银票，基本可按现金对待</td></tr>
+        <tr><td><strong>商业承兑汇票</strong></td><td>商票</td><td>出票企业</td><td>取决于企业资金实力和付款意愿，信用良莠不齐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>贴现</strong>：持票人为了在到期前获得现金，支付一定利息将票据收款权转让给银行的行为。由于金钱的时间价值，银票价值略低于同等面值现金。</p>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 提示</div>
+    如果一家非金融企业报表里存在与正常经营规模<strong>不匹配</strong>的应收票据，需警惕其可能在票据市场当"炒家"。
+  </div>
+
+  <h4>知识链接：承兑汇票</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>概念</th><th>定义</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>承兑</strong></td><td>承诺兑付现金的简称</td></tr>
+        <tr><td><strong>商业承兑汇票</strong></td><td>出票企业承诺到期见票直接支付现金</td></tr>
+        <tr><td><strong>银行承兑汇票</strong></td><td>银行基于对企业还款能力的审核或资产担保，开出由银行承诺到期兑付的票据，协助降低商业贸易中的信任成本</td></tr>
+        <tr><td><strong>贴现</strong></td><td>持票人为了在到期前获得现金，支付利息将收款权转让给任意银行</td></tr>
+        <tr><td><strong>转贴现</strong></td><td>持票银行利用未到期承兑汇票，从其他银行或金融机构获取资金</td></tr>
+        <tr><td><strong>再贴现</strong></td><td>中央银行通过买进银行持有的尚未到期票据，向银行提供资金支持</td></tr>
+        <tr><td><strong>贴现率</strong></td><td>市场利率，由双方协商确定，一般不超过现行贷款利率</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout example">
+    <div class="callout-title">📚 贵州茅台2013年应收票据</div>
+    <div class="table-wrapper" style="margin-top:12px">
+      <table>
+        <thead><tr><th>种类</th><th class="num">期末数（元）</th><th class="num">期初数（元）</th></tr></thead>
+        <tbody>
+          <tr><td>银行承兑汇票</td><td class="num">296,084,005.00</td><td class="num">204,079,117.80</td></tr>
+          <tr class="total"><td>合计</td><td class="num">296,084,005.00</td><td class="num">204,079,117.80</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:8px;margin-bottom:0">茅台应收票据不足当期营业收入1%且全部是银票，证明企业地位强势，产品抢手。</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 注意</div>
+    如果应收票据里<strong>突然大量出现商票</strong>，基本能够证明企业的产品或服务遇到了销售困境，开始放松销售政策。
+  </div>
+
+  <h3 id="s2-2">2. 应收账款</h3>
+
+  <p>应收账款是由企业赊销商品或劳务造成的，相当于日常生活中的"欠条"。</p>
+
+  <p><strong>收款条件从优到劣排序</strong>：</p>
+
+  <div class="formula">
+    现金 &gt; 银票 &gt; 商票 &gt; 应收账款
+  </div>
+
+  <p>能够做到先款后货或现钱现货的企业，必然具备某种竞争优势，估值时可以给予加分。</p>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 注意：增值税的影响</div>
+    凡是涉及增值税的企业，应收票据、应收款项和销售商品收到的现金里，都包含代税务局向买方收的<strong>增值税</strong>。但公司利润表所有科目数据<strong>均不含增值税</strong>。投资者计算跨表数据关系时，不要忽略增值税的影响。
+  </div>
+
+  <h4>知识链接：增值税</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>要点</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>税种性质</strong></td><td>中国第一大税种，流转税。无论是否盈利，只要涉及商品生产、批发、零售和进口活动，都要缴纳。</td></tr>
+        <tr><td><strong>价外税</strong></td><td>采购时支付增值税不计入成本；销售时收来的增值税不计入收入。公司只是义务帮税务局"跑腿"。</td></tr>
+        <tr><td><strong>分账比例</strong></td><td>营改增前：中央75%，地方25%；营改增后（2016年5月1日起）：中央和地方各50%</td></tr>
+        <tr><td><strong>主要税率变化</strong></td><td>营改增前：17%、13%两档；营改增后新增11%（交通运输）、6%（服务业）；2017年7月取消13%，调整为17%/11%/6%；2018年5月降为16%/10%；2019年4月降为13%/9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout example">
+    <div class="callout-title">📚 计算示例</div>
+    贵州茅台53°飞天茅台酒2014年含税出厂价819元/瓶，增值税税率17%。公司缴纳的增值税不是819×17%，而是819÷1.17×17%≈119元。公司只能记录<strong>700元</strong>营业收入。
+  </div>
+
+  <h3 id="s2-3">3. 应收账款的陷阱</h3>
+
+  <p>利用权责发生制，有些公司会通过<strong>放货出去</strong>增加应收账款的同时<strong>虚增收入</strong>。</p>
+
+  <div class="compare-row">
+    <div class="compare-item" style="border-top:4px solid var(--warning)">
+      <h5><span class="badge red">危险信号</span></h5>
+      <p>应收账款大幅增长，增长幅度超过同期收入增长幅度；应收账款周转率显著低于行业平均水平，或呈明显下降趋势。</p>
+    </div>
+    <div class="compare-item" style="border-top:4px solid var(--warning)">
+      <h5><span class="badge red">可能预示</span></h5>
+      <p>公司临时放宽信用政策，加大赊销力度；或公司提前确认收入甚至<strong>虚构收入</strong>。</p>
+    </div>
+  </div>
+
+  <p><strong>应收账款周转率公式</strong>：</p>
+
+  <div class="formula">
+    应收账款周转率 = 营业收入 ÷ 应收账款平均余额<br>
+    应收账款平均余额 = （期初应收账款 + 期末应收账款）÷ 2
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 老唐经验</div>
+    观察应收账款周转率时，喜欢将<strong>商票余额</strong>也计算为应收账款余额，即：
+    <div class="formula" style="margin-top:12px;font-size:15px">
+      应收账款平均余额 = （期初应收账款 + 期初商票余额 + 期末应收账款 + 期末商票余额）÷ 2
+    </div>
+  </div>
+
+  <h3 id="s2-4">4. 应收账款的构成与坏账准备</h3>
+
+  <p>如果公司应收账款占营业收入比例较大，且超过<strong>三成</strong>是一年以上应收款，投资者需警惕收入真实性。</p>
+
+  <p>以贵州茅台2013年为例，应收账款按账龄披露：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>账龄</th><th class="num">期末账面余额（元）</th><th class="num">比例(%)</th><th class="num">期末坏账准备（元）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1年以内</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>1至2年</td><td class="num">41,307.99</td><td class="num">0.73</td><td class="num">4,130.80</td></tr>
+        <tr><td>2至3年</td><td class="num">767,712.00</td><td class="num">13.57</td><td class="num">230,313.60</td></tr>
+        <tr><td>3至4年</td><td class="num">4,412.00</td><td class="num">0.08</td><td class="num">1,764.80</td></tr>
+        <tr><td>4至5年</td><td class="num">1,000,000.00</td><td class="num">17.68</td><td class="num">650,000.00</td></tr>
+        <tr><td>5年以上</td><td class="num">3,843,892.04</td><td class="num">67.94</td><td class="num">3,843,892.04</td></tr>
+        <tr class="total"><td>合计</td><td class="num">5,657,324.03</td><td class="num">100.00</td><td class="num">4,730,101.24</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>应收账款金额前五名单位情况：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>单位名称</th><th>与本公司关系</th><th class="num">金额（元）</th><th>年限</th><th class="num">占比(%)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>广州殊荣酒业有限公司</td><td>经销商</td><td class="num">1,000,000.00</td><td>4至5年</td><td class="num">17.68</td></tr>
+        <tr><td>云南昆明远威经贸有限公司</td><td>经销商</td><td class="num">847,620.00</td><td>5年以上</td><td class="num">14.98</td></tr>
+        <tr><td>天津飞萌实业有限公司</td><td>经销商</td><td class="num">784,900.00</td><td>5年以上</td><td class="num">13.87</td></tr>
+        <tr><td>上海国际名酒发展有限责任公司</td><td>经销商</td><td class="num">375,776.00</td><td>5年以上</td><td class="num">6.64</td></tr>
+        <tr><td>云南省富源县泰宇经贸有限公司</td><td>经销商</td><td class="num">352,328.00</td><td>2至3年</td><td class="num">6.23</td></tr>
+        <tr class="total"><td>合计</td><td></td><td class="num">3,360,624.00</td><td></td><td class="num">59.40</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>坏账准备计提规则</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>项目</th><th>标准/方法</th></tr></thead>
+      <tbody>
+        <tr><td><strong>单项金额重大判断标准</strong></td><td>单项金额在500万元以上<strong>且</strong>占期末净资产的1‰以上</td></tr>
+        <tr><td><strong>单项计提方法</strong></td><td>根据其预计未来现金流量现值低于账面价值的差额，单独进行减值测试</td></tr>
+        <tr><td><strong>组合计提方法</strong></td><td>按账龄分析法分组计提</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>账龄分析法计提比例</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>账龄</th><th class="num">应收账款计提比例</th><th class="num">其他应收款计提比例</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1年以内（含1年）</td><td class="num">5%</td><td class="num">5%</td></tr>
+        <tr><td>1—2年</td><td class="num">10%</td><td class="num">10%</td></tr>
+        <tr><td>2—3年</td><td class="num">30%</td><td class="num">30%</td></tr>
+        <tr><td>3—4年</td><td class="num">30—50%</td><td class="num">30—50%</td></tr>
+        <tr><td>4—5年</td><td class="num">50—80%</td><td class="num">50—80%</td></tr>
+        <tr><td>5年以上</td><td class="num">100%</td><td class="num">100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>特殊组合不计提坏账准备</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>组合名称</th><th>方法说明</th></tr></thead>
+      <tbody>
+        <tr><td>关联方（包括控股、参股子公司）</td><td>不计提坏账准备</td></tr>
+        <tr><td>备用金</td><td>不计提坏账准备</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 注意</div>
+    资产负债表展示的应收账款、应收票据、其他应收款、预付账款等资产数据，都是已经<strong>减过坏账准备后的净值</strong>。
+  </div>
+
+  <p><strong>坏账准备对利润的影响</strong>：</p>
+  <ul>
+    <li>计提的坏账准备在当期作为<strong>损失</strong>记录，直接从当期利润表里减去</li>
+    <li>若后续收回金额超过账面价值，差额可冲抵"资产减值损失"，减少当期费用</li>
+    <li>这成为资本玩家操纵利润的手段：<strong>积极计提</strong>降低本期利润 → 下期收款<strong>转回</strong>获得财报利润增长</li>
+  </ul>
+
+  <h4>不同行业坏账计提比例对比</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>行业</th><th>公司</th><th class="num">1年内</th><th class="num">1-2年</th><th class="num">2-3年</th><th class="num">3-4年</th><th class="num">4-5年</th><th class="num">5年以上</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="5"><strong>汽车</strong></td><td>潍柴动力</td><td class="num">5</td><td class="num">15</td><td class="num">30</td><td class="num">50</td><td class="num">80</td><td class="num">100</td></tr>
+        <tr><td>宇通客车</td><td class="num">5</td><td class="num">10</td><td class="num">20</td><td class="num">40</td><td class="num">60</td><td class="num">100</td></tr>
+        <tr><td>江淮汽车</td><td class="num">5</td><td class="num">10</td><td class="num">30</td><td class="num">50</td><td class="num">80</td><td class="num">100</td></tr>
+        <tr><td>江铃汽车</td><td class="num">0.5</td><td class="num">0.5</td><td class="num">0.5</td><td class="num">0.5</td><td class="num">0.5</td><td class="num">0.5</td></tr>
+        <tr><td>福田汽车</td><td class="num">1</td><td class="num">5</td><td class="num">10</td><td class="num">20</td><td class="num">40</td><td class="num">40</td></tr>
+        <tr><td rowspan="5"><strong>施工</strong></td><td>中国建筑</td><td class="num">5</td><td class="num">10</td><td class="num">20</td><td class="num">50</td><td class="num">50</td><td class="num">100</td></tr>
+        <tr><td>安徽水利</td><td class="num">5</td><td class="num">8</td><td class="num">10</td><td class="num">50</td><td class="num">50</td><td class="num">50</td></tr>
+        <tr><td>中国化学</td><td class="num">0.5</td><td class="num">3</td><td class="num">10</td><td class="num">20</td><td class="num">50</td><td class="num">80</td></tr>
+        <tr><td>中国电建</td><td class="num">1</td><td class="num">2</td><td class="num">10</td><td class="num">20</td><td class="num">20</td><td class="num">80</td></tr>
+        <tr><td>宁波建工</td><td class="num">3</td><td class="num">10</td><td class="num">15</td><td class="num">20</td><td class="num">20</td><td class="num">20</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 提示</div>
+    计提标准越严格的公司越值得信赖。但需警惕公司突然改变会计政策——<strong>一贯宽松突然严格</strong>，可能是意图"洗大澡"做低基数；<strong>一贯严格突然宽松</strong>，美化当年利润的意图明显。
+  </div>
+
+  <h3 id="s2-5">5. 应收账款造假</h3>
+
+  <div class="compare-row">
+    <div class="compare-item" style="border-top:4px solid var(--warning)">
+      <h5><span class="badge red">常见掩盖手段</span></h5>
+      <p>找关联公司或客户付一笔款项冲销应收账款，同时通过其他应收款、预付款或购货款等名义将钱转出去，把应收账款变成预付款、存货或其他应收款。</p>
+    </div>
+    <div class="compare-item" style="border-top:4px solid var(--warning)">
+      <h5><span class="badge red">高级造假手段</span></h5>
+      <p>将应收账款收回后，利用在建工程、购买无形资产、长期股权投资等活动将资金流出，再通过摊销或减值完成"毁尸灭迹"。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 三、预付账款 ======================== -->
+  <h2 id="s3">三、预付账款</h2>
+
+  <p>预付账款是预付给供货单位的购货款或预付在建工程价款等。</p>
+
+  <div class="compare-row">
+    <div class="compare-item" style="border-top:4px solid var(--warning)">
+      <h5>经常需要预付大量款项给供应商</h5>
+      <p>→ 公司在商业生态链上地位不高或信用不好</p>
+    </div>
+    <div class="compare-item" style="border-top:4px solid var(--success)">
+      <h5>长期存在大量预收款项</h5>
+      <p>→ 公司产品供不应求或商业生态链地位较高/信用较好</p>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 警告：预付账款是财报造假的重要资金出口</div>
+    <ul>
+      <li>预付账款<strong>大幅增长</strong>，尤其是预付工程款、预付专利技术采购款大幅增长 → 关注是否存在通过预付款流出资金，再以购买商品或服务名义回流，虚增营收和利润的风险</li>
+      <li><strong>长时间挂账</strong>的预付款 → 很可能并非真实采购，而是以此名义挪用上市公司资金</li>
+    </ul>
+    <p>投资者应持续关注公司历年预付款占营业收入或营业成本的比例，若比例大幅波动且无法找到合理解释，需考虑防假防雷。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 四、应收利息和应收股利 ======================== -->
+  <h2 id="s4">四、应收利息和应收股利</h2>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>项目</th><th>定义</th></tr></thead>
+      <tbody>
+        <tr><td><strong>应收利息</strong></td><td>公司持有各类债权期间应该收到但尚未收到的利息</td></tr>
+        <tr><td><strong>应收股利</strong></td><td>公司持有其他公司股权期间，持股对象已宣布分配方案但尚未实施的分红</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>与之对应的负债端科目分别为"应付利息"和"应付股利"。</p>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 五、其他应收款 ======================== -->
+  <h2 id="s5">五、其他应收款</h2>
+
+  <p>其他应收款是一个"<strong>垃圾筐</strong>"。所有跟主营业务无关的应收款，企业都会放进这个栏目。</p>
+
+  <div class="compare-row">
+    <div class="compare-item" style="border-top:4px solid var(--success)">
+      <h5><span class="badge green">正常应包含</span></h5>
+      <p>应收赔款、罚款，替职工垫付的水电费、医药费、房租，车间/科室/个人借支的备用金等。</p>
+    </div>
+    <div class="compare-item" style="border-top:4px solid var(--warning)">
+      <h5><span class="badge red">可能被滥用的情形</span></h5>
+      <p>隐藏短期投资、截留投资收益；转移资金（如大股东占用上市公司资金）；私设小金库；隐藏利润或费用、调节报表。</p>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 警告</div>
+    如果企业账上本就没几个钱，还容忍大量应收账款和其他应收款存在，投资者可以直接怀疑应收款造假。
+  </div>
+
+  <h4>其他流动资产 / 其他非流动资产</h4>
+
+  <p>会计做账时遇到不好归类的资产，会自设科目记录。期末汇总时，周转期不超过一年的归入其他流动资产；超过一年的归入其他非流动资产。</p>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 提示</div>
+    优秀上市公司通常"其他××"科目涉及金额较小，甚至为零。若遇到"其他××"数目较大，可先抱着公司经营不够规范的初步印象来看财报。
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 六、长期应收款 ======================== -->
+  <h2 id="s6">六、长期应收款</h2>
+
+  <p>长期应收款主要分为两类：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>类型</th><th>实质</th></tr></thead>
+      <tbody>
+        <tr><td><strong>融资租赁产生的应收款项</strong></td><td>出租方产生的长期应收</td></tr>
+        <tr><td><strong>递延方式分期收款</strong></td><td>具有出借资金性质的销售商品或提供劳务产生的应收款。买方付款总额明显超过商品公允价值，或约定有明确利息</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>递延方式分期收款相当于：上市公司先销售商品收到全款，又把现金借给对方使用，按照合同约定分期收回本金和利息。与之对应，承租方或购买方产生负债端的"长期应付款"。</p>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 七、存货 ======================== -->
+  <h2 id="s7">七、存货</h2>
+
+  <p>存货是企业以出售为目的持有的商品、处在生产过程中的在产品以及相关原材料等。</p>
+
+  <h4>存货账面价值（存货成本）构成</h4>
+
+  <div class="card-grid">
+    <div class="card orange">
+      <h5>生产企业</h5>
+      <p>原材料、工人工资、制造费用（车间发生的工资、福利、折旧费、修理费、办公费、水电费、备件材料消耗、停工损失等，分摊到单个产品上）</p>
+    </div>
+    <div class="card green">
+      <h5>商业贸易企业</h5>
+      <p>采购成本、运输装卸费用及相关税费</p>
+    </div>
+  </div>
+
+  <h3 id="s7-1">利用存货造假的手法</h3>
+
+  <h4>手法一：不计提跌价准备</h4>
+
+  <p>上市公司应按<strong>成本与可变现净值孰低</strong>记录存货价值。有些公司为虚增当期利润，故意不对已明显贬值的存货计提跌价准备。</p>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 注意</div>
+    特定行业存货风险偏高，如新鲜食品、高科技制造业（一旦过保质期或行业发生重大改变，存货价值可能归零）。而有些行业如<strong>高端白酒</strong>，基本不存在计提存货跌价准备的问题。
+  </div>
+
+  <h4>手法二：虚构商品采购</h4>
+
+  <p>通过虚构商品采购流出资金，再将资金流回企业，虚增利润。</p>
+
+  <h4>手法三：加大生产，降低单位成本</h4>
+
+  <p>利用固定成本与产量无关、可变成本与产量挂钩的特性，企业通过<strong>提高不必要的生产量</strong>，将部分固定成本转移到新增存货里，降低当期销售产品的成本，从而虚增毛利率和利润。</p>
+
+  <div class="callout example">
+    <div class="callout-title">📚 会计魔术示例</div>
+    <div class="table-wrapper" style="margin-top:12px">
+      <table>
+        <thead><tr><th>项目</th><th>上年（正常）</th><th>今年（加大生产）</th></tr></thead>
+        <tbody>
+          <tr><td>生产并销售数量</td><td>1万件</td><td>销售1万件，生产2万件</td></tr>
+          <tr><td>总生产成本</td><td>2000万元（固定1000万+可变1000万）</td><td>3000万元（固定1000万+可变2000万）</td></tr>
+          <tr><td>单件成本</td><td>2000元</td><td>1500元</td></tr>
+          <tr><td>出厂价</td><td>4000元</td><td>4000元</td></tr>
+          <tr><td><strong>毛利率</strong></td><td><strong>50%</strong></td><td><strong>62.5%</strong></td></tr>
+          <tr><td><strong>毛利润变化</strong></td><td>—</td><td>增加500万元（增幅25%）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 警告</div>
+    这种利润增加是以存货增加、当期税收增加为代价的数字游戏。企业价值非但没有增加，反而可能因存货积压带来存储成本增加、减值准备增加，甚至产品过时导致价值归零。
+  </div>
+
+  <h4>成本计算方法</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>方法</th><th>定义</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td><strong>加权平均法</strong></td><td>期初存货成本+本期购入成本，除以期初数量+本期购入数量，得出单位成本</td><td>数量大、单价低、收发频繁的商品</td></tr>
+        <tr><td><strong>移动加权平均法</strong></td><td>以每批商品的生产或采购成本，加上原存货账面价值，除以总存货数量，得出存货单位成本</td><td>商品价值较大的情况</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======================== 八、新准则升级版 ======================== -->
+  <h2 id="s8">八、新准则升级版</h2>
+
+  <p>关于经营类资产共有七处变化，其中两处与新准则无关，五处因新准则施行而发生。</p>
+
+  <h3 id="s8-1">与新准则无关的变化</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>变化</th><th>内容</th><th>后续调整</th></tr></thead>
+      <tbody>
+        <tr><td><strong>变化（一）</strong></td><td>2018年，财政部要求将"应收账款"和"应收票据"合并为"应收账款和应收票据"科目披露，其下再分设明细</td><td>2019年4月恢复原样，拆成应收账款、应收票据和应付账款、应付票据披露</td></tr>
+        <tr><td><strong>变化（二）</strong></td><td>2018年，将"应收股利""应收利息"和"其他应收款"合并为"其他应收款"披露；负债端同理合并为"其他应付款"</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 提示</div>
+    阅读2018年后的财报，遇到其他应收款数额较大的，不能直接采用"其他××数目较大则经营不规范"的观点，而需要先<strong>去掉应收股利和应收利息</strong>的数额后再观察。
+  </div>
+
+  <h3 id="s8-2">新准则带来的变化</h3>
+
+  <h4>变化（一）：货币资金</h4>
+
+  <p>新收入准则和新金融工具准则施行后，子公司里有金融机构的新增"<strong>拆出资金</strong>"科目。自2019年1月1日起，资产负债表原计入货币资金的"<strong>存放同业款项</strong>"调整至"拆出资金"科目下披露。</p>
+
+  <div class="callout example">
+    <div class="callout-title">📚 以2019年贵州茅台财报为例</div>
+    <div class="table-wrapper" style="margin-top:12px">
+      <table>
+        <thead><tr><th>项目</th><th class="num">期末余额（元）</th><th class="num">期初余额（元）</th></tr></thead>
+        <tbody>
+          <tr><td>库存现金</td><td class="num">206,105.10</td><td class="num">10,553.44</td></tr>
+          <tr><td>银行存款</td><td class="num">13,251,611,132.75</td><td class="num">9,409,573,603.26</td></tr>
+          <tr><td>其中：存放中央银行法定存款准备金</td><td class="num">6,728,321,922.09</td><td class="num">6,631,503,120.52</td></tr>
+          <tr><td>存放中央银行超额存款准备金</td><td class="num">192,833,313.34</td><td class="num">185,879,436.35</td></tr>
+          <tr class="total"><td>货币资金合计</td><td class="num">13,251,817,237.85</td><td class="num">9,409,584,156.70</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px;margin-bottom:4px"><strong>拆出资金</strong>：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>项目</th><th class="num">期末余额（元）</th><th class="num">期初余额（元）</th></tr></thead>
+        <tbody>
+          <tr><td>存放同业款项</td><td class="num">117,181,364,283.89</td><td class="num">103,009,097,207.83</td></tr>
+          <tr><td>拆出资金</td><td class="num">2,000,000,000.00</td><td class="num">—</td></tr>
+          <tr><td>减：减值准备</td><td class="num">3,553,720.62</td><td class="num">—</td></tr>
+          <tr class="total"><td>账面价值</td><td class="num">117,377,810,563.27</td><td class="num">103,009,097,207.83</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p>因此，现金流量表的现金及现金等价物变动，从原准则下反映不受限制的货币资金变动，变成反映<strong>货币资金和拆出资金</strong>两个科目里不受限制资金之和的变动。</p>
+
+  <h4>变化（二）：长期应收款和长期应付款</h4>
+
+  <p>新租赁准则施行后，长期应收款和长期应付款里的<strong>融资租赁应收款</strong>、<strong>融资租赁应付款</strong>，单列为<strong>使用权资产</strong>和<strong>租赁负债</strong>披露。</p>
+
+  <h4>变化（三）：应收账款坏账计提</h4>
+
+  <p>新金融准则施行后，应收账款的坏账计提规则发生了重大变化（涉及大量投资类资产，详见"投资类资产"章节）。</p>
+
+  <h4>变化（四）：应收款项融资</h4>
+
+  <p>根据新金融准则规定，资产负债表在"应收账款""应收票据"之下，新增"<strong>应收款项融资</strong>"科目。</p>
+
+  <p>企业对应收票据和应收账款的三种常见处理方式：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>方式</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>坐等到期收款</strong></td><td>简单直接</td></tr>
+        <tr><td><strong>背书转让给供应商</strong></td><td>将票据支付给供应商购买商品或服务。大中型银行银票背书转让后可"终止确认"</td></tr>
+        <tr><td><strong>贴现/抵押/保理/证券化</strong></td><td>将应收款项换成现金。若最终兑付前所获现金属于企业负债，记录为"筹资活动现金流入"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>应收款项融资的确认逻辑</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>情形</th><th>会计科目</th></tr></thead>
+      <tbody>
+        <tr><td>计划持有到期，等待对方付款</td><td>应收账款 / 应收票据</td></tr>
+        <tr><td>打算抵押、保理或证券化（经营活动产生）</td><td>应收款项融资</td></tr>
+        <tr><td>收到商票和银票，常规性转手/出售/抵押/保理</td><td>应收款项融资（或交易性金融资产，较少见）</td></tr>
+        <tr><td>非经营活动产生的应收款项</td><td>通常直接计入应收款项融资</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-title">📄 注意</div>
+    计入"应收款项融资"<strong>不代表</strong>公司已经拿它去融资了，而是指公司有这个考虑。若确实已经用于融资，报表附注会披露"截至本期末已经质押的应收款项融资"或"已背书或贴现但尚未到期的应收款项融资"等明细。实务中，大部分上市公司的"应收款项融资"科目记录的主要是大中型银行开出的、信用良好的<strong>银行承兑汇票</strong>。
+  </div>
+
+  <h4>变化（五）：合同资产和合同负债</h4>
+
+  <p>新收入准则施行后，资产负债表新增两个科目：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>新科目</th><th>原准则对应概念</th><th>核心区别</th></tr></thead>
+      <tbody>
+        <tr><td><strong>合同资产</strong></td><td>应收账款</td><td>应收账款：收款权仅取决于时间流逝；合同资产：收款权还取决于其他条件（如安装验收、配套产品交付等）</td></tr>
+        <tr><td><strong>合同负债</strong></td><td>预收款项</td><td>合同负债：款项对应具体商品/服务，收款方只承担提供义务、不承担退款义务，<strong>不含</strong>增值税；预收款项：未对应具体商品/服务，客户有权要求退款，<strong>包含</strong>增值税</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout example">
+    <div class="callout-title">📚 理解示例</div>
+    <ul>
+      <li><strong>分众传媒</strong>广告合同：约定广告发布完毕后2个月内付清尾款。广告发布完毕后即可记录为"<strong>应收账款</strong>"（只需坐等时间流逝）。</li>
+      <li><strong>海康威视</strong>销售红外测温系统：合同约定安装完毕、验收合格后付款。设备移交但安装未完工时，尚未收到的设备款是"<strong>合同资产</strong>"（还取决于安装和验收）。</li>
+    </ul>
+  </div>
+
+  <p>从资产质量角度，<strong>合同资产弱于应收账款</strong>。合同资产可视为应收账款的前置科目，是为了让报表阅读者更早、更快地观察到企业运营情况所做的提前细化披露。</p>
+
+  <div class="divider"></div>
+
+  <div class="callout success" style="font-size:17px">
+    <div class="callout-title">🎓 本节结语</div>
+    经营类资产是读懂企业日常收付款流转的核心。货币资金、应收款项、存货的异常变动，往往是识别造假或经营风险的第一现场。下一节将进入投资类资产的学习。
+  </div>
+
+</main>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById('scrollTop');
+    if (window.scrollY > 400) { btn.classList.add('show'); }
+    else { btn.classList.remove('show'); }
+  });
+
+  var sections = document.querySelectorAll('[id]');
+  var navLinks = document.querySelectorAll('.sidebar nav a');
+
+  window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(s) {
+      if (s.offsetTop - 120 <= window.scrollY) { current = s.id; }
+    });
+    navLinks.forEach(function(a) {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) { a.classList.add('active'); }
+    });
+  });
+</script>
+
+</body>
+</html>
